@@ -27,8 +27,6 @@ import {
 import { KakaoIcon } from './KakaoIcon';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 
-const promoImage = 'https://cdn.imweb.me/upload/S202302154d48be455c812/747362f7bab63.jpg';
-
 interface OphthalmologyDetailProps {
   onBack: () => void;
 }
@@ -454,19 +452,6 @@ export function OphthalmologyDetail({ onBack }: OphthalmologyDetailProps) {
                 className="w-full h-auto object-cover"
               />
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Promotion Image Section */}
-      <section className="py-12 lg:py-16 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="relative">
-            <img
-              src={promoImage}
-              alt="안과 시술 특별 프로모션"
-              className="w-full h-auto rounded-2xl lg:rounded-3xl shadow-xl object-contain"
-            />
           </div>
         </div>
       </section>
