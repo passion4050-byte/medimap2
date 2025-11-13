@@ -1,0 +1,181 @@
+<!-- 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  MEDINEX 아임웹 임베드 코드
+  
+  📋 사용 방법:
+  1. 이 파일의 모든 내용을 복사 (Ctrl+A → Ctrl+C)
+  2. 아임웹 관리자 > 디자인 > 페이지 > 새 페이지 만들기
+  3. HTML 위젯 추가
+  4. 복사한 코드 붙여넣기 (Ctrl+V)
+  5. 저장 및 발행
+  
+  ✅ Vercel URL 연동 완료!
+  - https://medinex-landing-2.vercel.app/
+  
+  📌 주의사항:
+  - 페이지 설정에서 헤더/푸터 숨김 설정
+  - 전체 너비 레이아웃 사용 권장
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-->
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="제휴 파트너를 위한 프리미엄 메디컬 혜택 MEDINEX">
+  
+  <style>
+    /* 기본 리셋 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body, html {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+    }
+    
+    /* 아임웹 기본 여백 제거 */
+    .s_content_wrap,
+    .s_content,
+    .content {
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    
+    /* MEDINEX 컨테이너 */
+    .medinex-container {
+      position: relative;
+      width: 100%;
+      max-width: 100vw;
+      margin: 0;
+      padding: 0;
+      background: #ffffff;
+    }
+    
+    /* iframe 스타일 */
+    .medinex-iframe {
+      width: 100%;
+      border: none;
+      display: block;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    
+    /* 데스크톱 높이 */
+    @media (min-width: 769px) {
+      .medinex-iframe {
+        height: 4500px;
+      }
+    }
+    
+    /* 모바일 높이 */
+    @media (max-width: 768px) {
+      .medinex-iframe {
+        height: 6000px;
+      }
+    }
+    
+    /* 로딩 애니메이션 */
+    .medinex-loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    
+    .medinex-spinner {
+      border: 4px solid #f3f4f6;
+      border-top: 4px solid #9333ea;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 16px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .medinex-loading-text {
+      color: #6b7280;
+      font-size: 14px;
+    }
+    
+    /* iframe이 로드되면 로딩 숨김 */
+    .medinex-iframe.loaded ~ .medinex-loading {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="medinex-container">
+    <!-- MEDINEX iframe -->
+    <iframe 
+      id="medinex-iframe"
+      class="medinex-iframe"
+      src="https://medinex-landing-2.vercel.app/"
+      scrolling="no"
+      allow="clipboard-write; geolocation"
+      loading="lazy"
+      title="MEDINEX - 제휴 파트너를 위한 프리미엄 메디컬 혜택"
+      sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
+    ></iframe>
+    
+    <!-- 로딩 인디케이터 -->
+    <div class="medinex-loading">
+      <div class="medinex-spinner"></div>
+      <p class="medinex-loading-text">페이지 로딩 중...</p>
+    </div>
+  </div>
+
+  <script>
+    // iframe 로드 완료 처리
+    (function() {
+      const iframe = document.getElementById('medinex-iframe');
+      
+      // iframe 로드 완료 시
+      iframe.addEventListener('load', function() {
+        iframe.classList.add('loaded');
+        console.log('MEDINEX 페이지 로드 완료');
+      });
+      
+      // iframe 오류 처리
+      iframe.addEventListener('error', function() {
+        console.error('MEDINEX 페이지 로드 실패');
+        const loading = document.querySelector('.medinex-loading');
+        if (loading) {
+          loading.innerHTML = '<p style="color: #ef4444;">페이지를 불러올 수 없습니다. URL을 확인해주세요.</p>';
+        }
+      });
+      
+      // 자동 높이 조절 (선택사항)
+      window.addEventListener('message', function(event) {
+        // 보안: 신뢰할 수 있는 도메인만 허용
+        if (event.origin !== 'https://medinex-landing-2.vercel.app') return;
+        
+        if (event.data.type === 'resize' && event.data.height) {
+          iframe.style.height = event.data.height + 'px';
+          console.log('높이 조정:', event.data.height + 'px');
+        }
+      }, false);
+      
+      // 페이지 나갈 때 정리
+      window.addEventListener('beforeunload', function() {
+        iframe.src = 'about:blank';
+      });
+    })();
+  </script>
+</body>
+</html>
